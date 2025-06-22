@@ -27,38 +27,32 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void createCategory(Categeory categeory) {
-//        categeory.setCategeoryId(nextId++);
         categoryRepository.save(categeory);
     }
 
     @Override
     public String deleteCategory(Long categoryId) {
-        List<Categeory> categoryList = categoryRepository.findAll();
+//        List<Categeory> categoryList = categoryRepository.findAll();
+//        Categeory categeory = categoryList.stream()
+//                .filter(c -> c.getCategeoryId().equals(categoryId)).findFirst()
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found"));
 
-        Categeory categeory = categoryList.stream()
-                .filter(c -> c.getCategeoryId().equals(categoryId)).findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found"));
-
-        categoryRepository.delete(categeory); // we need category object to remove from database repository 
-
+        Categeory deleteCategory = categoryRepository.findById(categoryId).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category Not Found"));
+        categoryRepository.delete(deleteCategory); // we need category object to remove from database repository
         return "Categeory removed successfully " + categoryId;
     }
 
 
     @Override
     public Categeory updateCategory(Long categoryId, Categeory addCategeory) {
-        List<Categeory> categoryList = categoryRepository.findAll();
+//        Optional<Categeory> categoryList = categoryRepository.findById(categoryId);
+//        Categeory savedCategory = categoryList.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category Not Found"));
 
-        Optional<Categeory> optionalCategeory = categoryList.stream()
-                .filter(c -> c.getCategeoryId().equals(categoryId)).findFirst();
-
-        if (optionalCategeory.isPresent()) {
-            Categeory existingCategeory = optionalCategeory.get();
-            existingCategeory.setCategeoryName(addCategeory.getCategeoryName());
-            Categeory updatedCategory = categoryRepository.save(existingCategeory);
-            return updatedCategory;
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found");
-        }
+        Categeory savedCategory = categoryRepository.findById(categoryId).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Response Not Found"));
+        addCategeory.setCategeoryId(categoryId);
+        categoryRepository.save(addCategeory);
+        return savedCategory;
     }
 }
