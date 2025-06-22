@@ -1,6 +1,9 @@
 package com.ecommerce.sb_ecomm.service;
 
 import com.ecommerce.sb_ecomm.model.Categeory;
+import com.ecommerce.sb_ecomm.repository.CategoryRepository;
+import io.micrometer.common.KeyValues;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,26 +15,31 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    public List<Categeory> categoryList = new ArrayList<>();
     private Long nextId = 1L;
+
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Override
     public List<Categeory> getCategoryList() {
-        return categoryList;
+        return categoryRepository.findAll();
     }
 
     @Override
     public void createCategory(Categeory categeory) {
-        categeory.setCategeoryId(nextId++);
-        categoryList.add(categeory);
+//        categeory.setCategeoryId(nextId++);
+        categoryRepository.save(categeory);
     }
 
     @Override
     public String deleteCategory(Long categoryId) {
+        List<Categeory> categoryList = categoryRepository.findAll();
+
         Categeory categeory = categoryList.stream()
                 .filter(c -> c.getCategeoryId().equals(categoryId)).findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found"));
-        categoryList.remove(categeory); // we need category object to remove it so use above strategy
+
+        categoryRepository.delete(categeory); // we need category object to remove from database repository 
 
         return "Categeory removed successfully " + categoryId;
     }
@@ -39,13 +47,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Categeory updateCategory(Long categoryId, Categeory addCategeory) {
+        List<Categeory> categoryList = categoryRepository.findAll();
+
         Optional<Categeory> optionalCategeory = categoryList.stream()
                 .filter(c -> c.getCategeoryId().equals(categoryId)).findFirst();
 
         if (optionalCategeory.isPresent()) {
             Categeory existingCategeory = optionalCategeory.get();
             existingCategeory.setCategeoryName(addCategeory.getCategeoryName());
-            return existingCategeory;
+            Categeory updatedCategory = categoryRepository.save(existingCategeory);
+            return updatedCategory;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found");
         }
