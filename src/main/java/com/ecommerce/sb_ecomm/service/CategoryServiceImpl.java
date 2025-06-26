@@ -16,16 +16,13 @@ import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-
-    private Long nextId = 1L;
-
     @Autowired
     CategoryRepository categoryRepository;
 
     @Override
     public List<Categeory> getCategoryList() {
         List<Categeory> categories = categoryRepository.findAll();
-        if(categories.isEmpty()){
+        if (categories.isEmpty()) {
             throw new APIException("Category List is Empty");
         }
         return categories;
@@ -35,30 +32,21 @@ public class CategoryServiceImpl implements CategoryService {
     public void createCategory(Categeory categeory) {
         Categeory savedCategory = categoryRepository.findByCategeoryName(categeory.getCategeoryName());
         if (savedCategory != null) {
-            throw new APIException("Categeory with "+ categeory.getCategeoryName()+" name already exists!!!");
+            throw new APIException("Categeory with " + categeory.getCategeoryName() + " name already exists!!!");
         }
         categoryRepository.save(categeory);
     }
 
     @Override
     public String deleteCategory(Long categoryId) {
-//        List<Categeory> categoryList = categoryRepository.findAll();
-//        Categeory categeory = categoryList.stream()
-//                .filter(c -> c.getCategeoryId().equals(categoryId)).findFirst()
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found"));
-
         Categeory deleteCategory = categoryRepository.findById(categoryId).
                 orElseThrow(() -> new ResourceNotFoundException("Category", "categeoryId", categoryId));
         categoryRepository.delete(deleteCategory); // we need category object to remove from database repository
         return "Categeory removed successfully " + categoryId;
     }
 
-
     @Override
     public Categeory updateCategory(Long categoryId, Categeory addCategeory) {
-//        Optional<Categeory> categoryList = categoryRepository.findById(categoryId);
-//        Categeory savedCategory = categoryList.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category Not Found"));
-
         Categeory savedCategory = categoryRepository.findById(categoryId).
                 orElseThrow(() -> new ResourceNotFoundException("Category", "categeoryId", categoryId));
         addCategeory.setCategeoryId(categoryId);
