@@ -1,5 +1,6 @@
 package com.ecommerce.sb_ecomm.service;
 
+import com.ecommerce.sb_ecomm.exception.APIException;
 import com.ecommerce.sb_ecomm.exception.ResourceNotFoundException;
 import com.ecommerce.sb_ecomm.model.Categeory;
 import com.ecommerce.sb_ecomm.repository.CategoryRepository;
@@ -23,11 +24,19 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Categeory> getCategoryList() {
-        return categoryRepository.findAll();
+        List<Categeory> categories = categoryRepository.findAll();
+        if(categories.isEmpty()){
+            throw new APIException("Category List is Empty");
+        }
+        return categories;
     }
 
     @Override
     public void createCategory(Categeory categeory) {
+        Categeory savedCategory = categoryRepository.findByCategeoryName(categeory.getCategeoryName());
+        if (savedCategory != null) {
+            throw new APIException("Categeory with "+ categeory.getCategeoryName()+" name already exists!!!");
+        }
         categoryRepository.save(categeory);
     }
 
@@ -39,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
 //                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found"));
 
         Categeory deleteCategory = categoryRepository.findById(categoryId).
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category Not Found"));
+                orElseThrow(() -> new ResourceNotFoundException("Category", "categeoryId", categoryId));
         categoryRepository.delete(deleteCategory); // we need category object to remove from database repository
         return "Categeory removed successfully " + categoryId;
     }
@@ -51,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
 //        Categeory savedCategory = categoryList.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category Not Found"));
 
         Categeory savedCategory = categoryRepository.findById(categoryId).
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Response Not Found"));
+                orElseThrow(() -> new ResourceNotFoundException("Category", "categeoryId", categoryId));
         addCategeory.setCategeoryId(categoryId);
         categoryRepository.save(addCategeory);
         return savedCategory;
