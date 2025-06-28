@@ -1,28 +1,26 @@
 package com.ecommerce.sb_ecomm.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Getter
+@Setter
+@Entity(name = "Categories")
 public class Categeory {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categeoryId;
+
+    @NotBlank
+    @Size(min = 5, message = "Category Name must be 5 characters")
     private String categeoryName;
-
-    public Categeory(Long categeoryId, String categeoryName) {
-        this.categeoryId = categeoryId;
-        this.categeoryName = categeoryName;
-    }
-
-    public Long getCategeoryId() {
-        return categeoryId;
-    }
-
-    public void setCategeoryId(Long categeoryId) {
-        this.categeoryId = categeoryId;
-    }
-
-    public String getCategeoryName() {
-        return categeoryName;
-    }
-
-    public void setCategeoryName(String categeoryName) {
-        this.categeoryName = categeoryName;
-    }
 }
