@@ -18,9 +18,9 @@ public class Categeory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categeoryId;
+    private Long categoryId;
 
     @NotBlank
     @Size(min = 5, message = "Category Name must be 5 characters")
-    private String categeoryName;
+    private String categoryName;
 }
