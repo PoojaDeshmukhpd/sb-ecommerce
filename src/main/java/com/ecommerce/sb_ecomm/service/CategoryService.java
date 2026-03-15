@@ -6,7 +6,7 @@ import com.ecommerce.sb_ecomm.payload.CategoryResponse;
 
 
 public interface CategoryService {
-    CategoryResponse getCategoryList(Integer pageNumber, Integer pageSize);
+    CategoryResponse getCategoryList(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
     CategoryDTO createCategory(CategoryDTO category);
 
     CategoryDTO deleteCategory(Long categoryId);
