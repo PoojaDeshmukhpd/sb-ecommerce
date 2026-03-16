@@ -2,6 +2,9 @@ package com.ecommerce.sb_ecomm.socialMediaRelationshipExample.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class SocialUser {
     @Id
@@ -13,6 +16,11 @@ public class SocialUser {
     @OneToOne
     @JoinColumn(name = "social_profile_id")
    SocialProfile socialProfile;
+
+    // Many items are represented using List
+    @OneToMany(mappedBy = "socialUser")
+    private List<Post> postsList = new ArrayList<>();
+
 
     /*First Way : if i only add this annotation in SocialProfile then it will unidirectional
      but now i have added OneToOne here so it's bidirectional
