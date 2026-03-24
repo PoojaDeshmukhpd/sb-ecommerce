@@ -1,9 +1,16 @@
 package com.ecommerce.sb_ecomm.socialMediaRelationshipExample.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.repository.cdi.Eager;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SocialProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +21,7 @@ public class SocialProfile {
      Here as like first way it will not create any column of the social_user_id because mappedBy is used here*/
     @OneToOne(mappedBy = "socialProfile")
 //    @JoinColumn(name = "social_user")
+    @JsonIgnore
     private SocialUser socialUser;
 
     // First Way : this will be foreign key, if want to follow naming convention in project then use this annotation

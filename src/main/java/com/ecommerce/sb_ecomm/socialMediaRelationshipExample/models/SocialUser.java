@@ -1,12 +1,16 @@
 package com.ecommerce.sb_ecomm.socialMediaRelationshipExample.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class SocialUser {
     @Id
@@ -38,4 +42,11 @@ public class SocialUser {
      So this is the redundant data this is not good */
 //    @OneToOne
 //    private SocialProfile socialProfile;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+
 }
