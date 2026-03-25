@@ -18,10 +18,20 @@ public class SocialUser {
     private Long id;
 
     /* Seconds Way : if SocialUser is the owner of the relationship
-     if want to make SocialProfile as owner of the relationship do vice versa*/
-    @OneToOne
+     if want to make SocialProfile as owner of the relationship do vice versa
+     Cascading Type -> when saving social user it should save social profile as well
+     so if i pass the id 1 for user and id 1 for social profile it will work
+     Request Body of Social User save post {
+    "id": 3,
+        "socialProfile": {
+            "id" : 3 ,
+            "decsription":"Test"
+        }
+}
+     */
+    @OneToOne(mappedBy = "socialUser", cascade = CascadeType.ALL)
     @JoinColumn(name = "social_profile_id")
-   SocialProfile socialProfile;
+   private SocialProfile socialProfile;
 
     // Many items are represented using List
     @OneToMany(mappedBy = "socialUser")
@@ -49,4 +59,9 @@ public class SocialUser {
     }
 
 
+    // Setter for setting social profile for user
+    public void setSocialProfile(SocialProfile socialProfile) {
+        socialProfile.setSocialUser(this);
+        this.socialProfile = socialProfile;
+    }
 }
