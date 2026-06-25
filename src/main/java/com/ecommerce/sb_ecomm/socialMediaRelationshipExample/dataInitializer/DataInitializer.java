@@ -33,69 +33,69 @@ public class DataInitializer {
             SocialUser user1 = new SocialUser();
             SocialUser user2 = new SocialUser();
             SocialUser user3 = new SocialUser();
-
-            socialUserRepository.save(user1);
-            socialUserRepository.save(user2);
-            socialUserRepository.save(user3);
-
-            // Create Some Groups
-            SocialGroup group1 = new SocialGroup();
-            SocialGroup group2 = new SocialGroup();
-
-            // Add Users to Group
-            group1.getSocialUsers().add(user1);
-            group1.getSocialUsers().add(user2);
-
-            group2.getSocialUsers().add(user2);
-            group2.getSocialUsers().add(user3);
-
-            // Associate users with groups
-            user1.getSocialGroups().add(group1);
-            user2.getSocialGroups().add(group1);
-
-            user2.getSocialGroups().add(group2);
-            user3.getSocialGroups().add(group2);
-
-            // Save Groups to the Database
-            socialGroupRepository.save(group1);
-            socialGroupRepository.save(group2);
-
-            // save users back to database to update association
-            socialUserRepository.save(user1);
-            socialUserRepository.save(user2);
-            socialUserRepository.save(user3);
-
-
-
-            // Create Some Post
-            Post post1 = new Post();
-            Post post2 = new Post();
-            Post post3 = new Post();
-
-            // Associates Post with users
-            post1.setSocialUser(user1);
-            post2.setSocialUser(user2);
-            post3.setSocialUser(user3);
-
-            // Save post into database
-            postRepository.save(post1);
-            postRepository.save(post2);
-
-
-            // Create some social profiles
-            SocialProfile profile1 = new SocialProfile();
-            SocialProfile profile2 = new SocialProfile();
-            SocialProfile profile3 = new SocialProfile();
-
-            // Associate profile with users
-            profile1.setSocialUser(user1);
-            profile2.setSocialUser(user2);
-            profile3.setSocialUser(user3);
-
-            // Save Social Profile
-            socialProfileRepository.save(profile1);
-            socialProfileRepository.save(profile2);
-            socialProfileRepository.save(profile3);
+//
+//            socialUserRepository.save(user1);
+//            socialUserRepository.save(user2);
+//            socialUserRepository.save(user3);
+//
+//            // Create Some Groups
+//            SocialGroup group1 = new SocialGroup();
+//            SocialGroup group2 = new SocialGroup();
+//
+//            // Add Users to Group
+//            group1.getSocialUsers().add(user1);
+//            group1.getSocialUsers().add(user2);
+//
+//            group2.getSocialUsers().add(user2);
+//            group2.getSocialUsers().add(user3);
+//
+//            // Associate users with groups
+//            user1.getSocialGroups().add(group1);
+//            user2.getSocialGroups().add(group1);
+//
+//            user2.getSocialGroups().add(group2);
+//            user3.getSocialGroups().add(group2);
+//
+//            // Save Groups to the Database
+//            socialGroupRepository.save(group1);
+//            socialGroupRepository.save(group2);
+//
+//            // save users back to database to update association
+//            socialUserRepository.save(user1);
+//            socialUserRepository.save(user2);
+//            socialUserRepository.save(user3);
+//
+//
+//
+//            // Create Some Post
+//            Post post1 = new Post();
+//            Post post2 = new Post();
+//            Post post3 = new Post();
+//
+//            // Associates Post with users
+//            post1.setSocialUser(user1);
+//            post2.setSocialUser(user2);
+//            post3.setSocialUser(user3);
+//
+//            // Save post into database
+//            postRepository.save(post1);
+//            postRepository.save(post2);
+//
+//
+//            // Create some social profiles
+//            SocialProfile profile1 = new SocialProfile();
+//            SocialProfile profile2 = new SocialProfile();
+//            SocialProfile profile3 = new SocialProfile();
+//
+//            // Associate profile with users
+//            profile1.setSocialUser(user1);
+//            profile2.setSocialUser(user2);
+//            profile3.setSocialUser(user3);
+//
+//            // Save Social Profile
+//            socialProfileRepository.save(profile1);
+//            socialProfileRepository.save(profile2);
+//            socialProfileRepository.save(profile3);
 
         });
     }
