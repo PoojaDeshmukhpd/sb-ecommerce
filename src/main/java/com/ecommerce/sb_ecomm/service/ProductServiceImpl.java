@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
@@ -26,9 +26,10 @@ public class ProductServiceImpl implements ProductService{
     private ModelMapper modelMapper;
 
     @Override
-    public ProductDTO addProduct(Long categoryId, Product product) {
+    public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
+        Product product = modelMapper.map(productDTO, Product.class);
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category","category id", categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "category id", categoryId));
 
         product.setImage("default.png");
         product.setCategory(category);
@@ -43,7 +44,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductResponse getAllProducts() {
         List<Product> productsList = productRepository.findAll();
-        List<ProductDTO> productDTOS =productsList.stream()
+        List<ProductDTO> productDTOS = productsList.stream()
                 .map(product -> modelMapper.map(product, ProductDTO.class))
                 .collect(Collectors.toList());
         ProductResponse productResponse = new ProductResponse();
@@ -55,7 +56,7 @@ public class ProductServiceImpl implements ProductService{
     public ProductResponse searchByCategory(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Category","category id", categoryId));
+                        new ResourceNotFoundException("Category", "category id", categoryId));
 
         List<Product> productsByCategory = productRepository.findByCategoryOrderByPriceAsc(category);
 
@@ -66,5 +67,44 @@ public class ProductServiceImpl implements ProductService{
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(productDtos);
         return productResponse;
+    }
+
+    @Override
+    public ProductResponse searchProductByKeyword(String keyword) {
+        List<Product> matchedProductsList = productRepository.findByProductNameLikeIgnoreCase('%' + keyword + '%');
+        List<ProductDTO> productDTOList = matchedProductsList.stream()
+                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .toList();
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContent(productDTOList);
+        return productResponse;
+    }
+
+    @Override
+    public ProductDTO deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+        productRepository.delete(product);
+        return modelMapper.map(product, ProductDTO.class);
+    }
+
+    @Override
+    public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
+        Product updateProduct = modelMapper.map(productDTO, Product.class);
+
+        Product productFoundFromDb = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("product", "productId", productId));
+
+        productFoundFromDb.setProductName(updateProduct.getProductName());
+        productFoundFromDb.setDescription(updateProduct.getDescription());
+        productFoundFromDb.setQuantity(updateProduct.getQuantity());
+        productFoundFromDb.setPrice(updateProduct.getPrice());
+        productFoundFromDb.setDiscount(updateProduct.getDiscount());
+        productFoundFromDb.setSpecialPrice(updateProduct.getSpecialPrice());
+
+        // Save to Database
+        Product updatedProduct = productRepository.save(productFoundFromDb);
+        return modelMapper.map(updatedProduct, ProductDTO.class);
     }
 }
