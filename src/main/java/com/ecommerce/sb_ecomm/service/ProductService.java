@@ -1,6 +1,5 @@
 package com.ecommerce.sb_ecomm.service;
 
-import com.ecommerce.sb_ecomm.model.Product;
 import com.ecommerce.sb_ecomm.payload.ProductDTO;
 import com.ecommerce.sb_ecomm.payload.ProductResponse;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,10 +9,10 @@ import java.io.IOException;
 public interface ProductService {
     ProductDTO addProduct(Long categoryId, ProductDTO product);
 
-    ProductResponse getAllProducts();
-    ProductResponse searchByCategory(Long categoryId);
+    ProductResponse getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+    ProductResponse searchByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
-    ProductResponse searchProductByKeyword(String keyword);
+    ProductResponse searchProductByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
     ProductDTO deleteProduct(Long productId);
 
