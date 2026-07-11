@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserInfoResponse {
     private Long id;
-    private String jwtToken;
+//    private String jwtToken;
 
     private String username;
     private List<String> roles;
