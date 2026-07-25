@@ -78,6 +78,8 @@ public class WebSecurityConfig {
                                 .requestMatchers("/swagger-ui/**").permitAll()
 //                                .requestMatchers("/api/public/**").permitAll()
                                 .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/carts/**").permitAll()
+                                .requestMatchers("/api/cart/**").permitAll()
 //                                .requestMatchers("/api/admin/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/images/**").permitAll()
